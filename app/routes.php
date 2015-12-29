@@ -11,7 +11,12 @@
 |
 */
 
-Route::get('/', function()
+
+//Rutas para pedidos
+Route::group(array('prefix' => 'pedido'), function()
 {
-	return View::make('hello');
+
+	//Retorna pedido por id
+	Route::get('obtener-por-id/{idPedido}','PedidoController@getPedido');
+
 });
