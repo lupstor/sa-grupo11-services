@@ -57,22 +57,24 @@ class PedidoController extends BaseController {
 
 	public  function guardarPedidoPresencial()
 	{
-		$response = self::SUCCESS;
+		$response = array();
+		$responseCode= self::SUCCESS;
+
 		try {
 			$data = Input::all();
 
 			$pedido = new Pedido();
 			$pedido->cliente = $data["cliente"];
-			$pedido->gestionado_por = $data["empleado"];
-			$pedido->tipo_pago = $data["tipo_pago"];
-			$pedido->total = $data["total"];
+			$pedido->creado_por = $data["empleado"];
 			$pedido->save();
+			$response["id_pedido"] = $pedido->id;
 
 		} catch (\Exception $ex) {
 			Log::error($ex);
-			$response = self::FAIL;
+			$responseCode = self::FAIL;
 		}
-		return array("responseCode" => $response);
+		$response["responseCode"] = $responseCode;
+		return $response;
 	}
 
 
@@ -155,7 +157,7 @@ class PedidoController extends BaseController {
 	public function listaComprasFarmacias(){
 		try{
 			return DB::table('Pedido')
-				->join('Empleado', 'Pedido.gestionado_por', '=', 'Empleado.id')
+				->join('Empleado', 'Pedido.creado_por', '=', 'Empleado.id')
 				->join('Cliente', 'Pedido.cliente', '=', 'Cliente.id')
 				->join('PuntoVenta', 'Empleado.punto_venta_id', '=', 'PuntoVenta.id')
 				->select('Pedido.id', 'Cliente.nombre as cliente',
