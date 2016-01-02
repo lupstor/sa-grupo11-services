@@ -9,7 +9,8 @@ class ClienteController extends BaseController {
 	public function listaClientes()
 	{
 		try{
-			return Cliente::all();
+			return Cliente::lists('nombre', 'id');
+
 		} catch (\Exception $ex){
 			Log::error($ex);
 		}

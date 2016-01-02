@@ -12,9 +12,9 @@ class EmpleadoController extends BaseController {
 		try{
 			return DB::table('Empleado')
 				->join('PuntoVenta', 'Empleado.punto_venta_id', '=', 'PuntoVenta.id')
-				->select('Empleado.id', 'Empleado.nombre', 'Empleado.tipo_empleado','Empleado.email','PuntoVenta.nombre','PuntoVenta.tipo_punto_venta')
-				->where('PuntoVenta.tipo_punto_venta', '=', "$tipoPuntoVenta")
-				->get();
+				->select('Empleado.id as empleado_id', 'Empleado.nombre as empleado_nombre', 'Empleado.tipo_empleado','Empleado.email','PuntoVenta.nombre','PuntoVenta.tipo_punto_venta')
+				->where('PuntoVenta.tipo_punto_venta', '=', $tipoPuntoVenta)
+				->lists("empleado_nombre","empleado_id");
 		} catch (\Exception $ex){
 			Log::error($ex);
 		}

@@ -39,6 +39,10 @@ Route::group(array('prefix' => 'pedido'), function()
 	//Lista de compras call center
 	Route::get('lista-pedidos-call-center','PedidoController@listaPedidosCallCenter');
 
+	//Detalle de pedido
+	Route::get('detalle-pedido/{idPedido}','PedidoController@detallePedido');
+
+
 });
 
 //Rutas para empleados

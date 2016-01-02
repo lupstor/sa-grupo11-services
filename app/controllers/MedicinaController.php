@@ -10,7 +10,7 @@ class MedicinaController extends BaseController
 	public function listaMedicinas()
 	{
 		try {
-			return Medicina::all();
+			return Medicina::where("cantidad",">",0)->lists('nombre', 'id');
 		} catch (\Exception $ex) {
 			Log::error($ex);
 		}

@@ -78,28 +78,26 @@ class PedidoController extends BaseController {
 
 
 	public  function  guardarPedidoCallCenter(){
-		$response = self::SUCCESS;
+		$responseCode= self::SUCCESS;
+		$response = array();
 		try {
 			$data = Input::all();
 
 			$pedido = new Pedido();
 			$pedido->cliente = $data["cliente"];
-			$pedido->gestionado_por = $data["empleado"];
-			$pedido->status = $data["status"];
+			$pedido->creado_por = $data["creado_por"];
 			$pedido->direccion_entrega = $data["direccion_entrega"];
 			$pedido->nombre_recibe = $data["nombre_recibe"];
-			$pedido->total = $data["total"];
-			$pedido->repartidor = $data["repartidor"];
 			$pedido->call_center = $data["call_center"];
-			$pedido->creado_por = $data["creado_por"];
-			$pedido->hora_salida = (new DateTime())->format("Y-m-d h:m:i");;
+			$pedido->status = $data["status"];
 			$pedido->save();
-
+			$response["id_pedido"] = $pedido->id;
 		} catch (\Exception $ex) {
 			Log::error($ex);
-			$response = self::FAIL;
+			$responseCode = self::FAIL;
 		}
-		return array("responseCode" => $response);
+		$response["responseCode"] = $responseCode;
+		return $response;
 	}
 
 
@@ -109,12 +107,30 @@ class PedidoController extends BaseController {
 		try {
 			$data = Input::all();
 
+			$medicina = Medicina::find($data["medicina"]);
+			$cantidadRestante = $medicina->cantidad - $data["cantidad"];
+
+			if($data["cantidad"] == 0) throw new \Exception("Se tiene que agregar por lo menos un medicamento");
+			if($cantidadRestante <= 0) throw new \Exception("No hay disponbilidad suficiente de medicina");
+
+			//Guardar detalle
+			$subtotal = $medicina->precio * (int) $data["cantidad"];
 			$detallePedido = new DetallePedido();
 			$detallePedido->pedido_id = $data["pedido_id"];
 			$detallePedido->medicina = $data["medicina"];
 			$detallePedido->cantidad = $data["cantidad"];
-			$detallePedido->subtotal = $data["subtotal"];
+			$detallePedido->subtotal = $subtotal;
 			$detallePedido->save();
+
+			//Actualizar total
+			$pedido = Pedido::find($data["pedido_id"]);
+			$pedido->total = $pedido->total+ $subtotal;
+			$pedido->save();
+
+			//Restar de el catalogo
+			$medicina->cantidad = $cantidadRestante;
+			$medicina->save();
+
 		} catch (\Exception $ex) {
 			Log::error($ex);
 			$response = self::FAIL;
@@ -162,11 +178,9 @@ class PedidoController extends BaseController {
 			return DB::table('Pedido')
 				->select('Pedido.id',
 					'Pedido.created_at as fecha_hora',
-					'Pedido.status',
-					'Pedido.repartidor',
 					'Pedido.cliente',
 					'Pedido.creado_por',
-					'Pedido.gestionado_por',
+					'Pedido.status',
 					'Pedido.call_center',
 					'Pedido.nombre_recibe',
 					'Pedido.direccion_entrega',
@@ -174,6 +188,18 @@ class PedidoController extends BaseController {
 					'Pedido.total'
 					)
 				->where('Pedido.call_center', '!=', "")
+				->get();
+		} catch (\Exception $ex){
+			Log::error($ex);
+		}
+		return null;
+
+	}
+
+	public  function  detallePedido($pedidoId){
+		try{
+			return DB::table('DetallePedido')
+				->where('DetallePedido.pedido_id', '=', $pedidoId)
 				->get();
 		} catch (\Exception $ex){
 			Log::error($ex);
