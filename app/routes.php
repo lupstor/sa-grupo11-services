@@ -64,5 +64,5 @@ Route::group(array('prefix' => 'cliente'), function()
 Route::group(array('prefix' => 'medicina'), function()
 {
 	//Retorna lista de medicinas
-	Route::get('lista','MedicinaController@listaMedicinas');
+	Route::get('lista-medicinas','MedicinaController@listaMedicinas');
 });
