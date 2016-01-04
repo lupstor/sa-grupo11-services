@@ -59,7 +59,6 @@ class ClienteController extends BaseController {
 	public function eliminarCliente($idCliente)
 	{
 
-		Log::debug(__METHOD__ ." - idCliente recibido: ". print_r($idCliente,true));
 		$responseCode= self::SUCCESS;
 		$response = array();
 		
@@ -75,9 +74,52 @@ class ClienteController extends BaseController {
 
 		$response["responseCode"] = $responseCode;
 		return $response;
+	}
+
+	public function actualizarCliente()
+	{
 
 
+		$responseCode= self::SUCCESS;
+		$response = array();
 
+		//Get request data
+		$postData = Input::all();
+		
+		try{
+
+			$cliente = Cliente::find($postData["id"]);
+			$cliente -> nombre = $postData["nombre"];
+			$cliente -> telefono = $postData["telefono"];
+			$cliente -> direccion = $postData["direccion"];
+			$cliente -> email = $postData["email"];
+			$cliente -> save();
+
+		}catch (\Exception $ex) {
+			Log::error($ex);
+			$responseCode = self::FAIL;
+		}
+
+		$response["responseCode"] = $responseCode;
+		return $response;
+
+		//Log::debug(__METHOD__ ." - Cliente a modificar id: ". print_r($cliente -> id ,true));
+
+
+	}
+
+	public function obtenerCliente($idCliente)
+	{
+
+		try{
+			
+			$cliente =  Cliente::find($idCliente);
+			return $cliente;
+			
+		} catch (\Exception $ex){
+			Log::error($ex);
+		}
+		return null;
 
 	}
 
