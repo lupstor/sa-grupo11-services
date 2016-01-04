@@ -61,6 +61,8 @@ Route::group(array('prefix' => 'cliente'), function()
 	Route::get('lista','ClienteController@listaClientes');
 	//retorna los datos de los clientes
 	Route::get('lista-clientes','ClienteController@listarClientes');
+	//guardar cliente
+	Route::post('guardar-cliente','ClienteController@guardarCliente');
 	
 
 });
