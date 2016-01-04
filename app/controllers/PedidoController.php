@@ -102,8 +102,6 @@ class PedidoController extends BaseController {
 		return $response;
 	}
 
-
-
 	public function  guardarDetallePedido(){
 		$response = self::SUCCESS;
 		try {
@@ -210,5 +208,43 @@ class PedidoController extends BaseController {
 
 	}
 
-
+	public function guardarPagoPedido(){
+		$response = self::SUCCESS;
+		try {
+			$data = Input::all();
+			$pedido = Pedido::find($data["idPedido"]);
+			$pedido->tipo_pago = $data["tipo_pago"];
+			$pedido->status = $data["status"];
+			$pedido->save();
+		}  catch (\Exception $ex) {
+			Log::error($ex);
+			$response = self::FAIL;
+		}	
+		return array("responseCode" => $response);
+	}
+	
+	public function verificarPagoTarjeta(){
+		$response = self::SUCCESS;
+		try {
+			$data = Input::all();
+			if($data["NoTarjeta"] <= 0) throw new \Exception("Debe Agregar un numero de Tarjeta Valido");
+			if($data['CodigoSeguridad'] <= 0) throw new \Exception("Debe Agregar un codigo de Tarjeta Valido");
+		}  catch (\Exception $ex) {
+			Log::error($ex);
+			$response = self::FAIL;
+		}	
+		return array("responseCode" => $response);
+	}
+	
+	public function verificarPagoEfectivo(){
+		$response = self::SUCCESS;
+		try {
+			$data = Input::all();
+			if($data["ocultoCambio"] < 0) throw new \Exception("El pago debe ser mayor al total de la compra");
+		}  catch (\Exception $ex) {
+			Log::error($ex);
+			$response = self::FAIL;
+		}	
+		return array("responseCode" => $response);
+	}
 }

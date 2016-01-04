@@ -29,6 +29,10 @@ Route::group(array('prefix' => 'pedido'), function()
 	Route::post('guardar-pedido-presencial','PedidoController@guardarPedidoPresencial');
 	Route::post('guardar-pedido-call-center','PedidoController@guardarPedidoCallCenter');
 	Route::post('guardar-detalle-pedido','PedidoController@guardarDetallePedido');
+	Route::post('guardar-pago-pedido','PedidoController@guardarPagoPedido');
+	Route::post('verificar-pago-tarjeta','PedidoController@verificarPagoTarjeta');
+	Route::post('verificar-pago-efectivo','PedidoController@verificarPagoEfectivo');
+	
 
 	//Borra pedido
 	Route::get('borrar-pedido/{idPedido}','PedidoController@borrarPedido');
