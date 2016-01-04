@@ -33,7 +33,6 @@ Route::group(array('prefix' => 'pedido'), function()
 	Route::post('verificar-pago-tarjeta','PedidoController@verificarPagoTarjeta');
 	Route::post('verificar-pago-efectivo','PedidoController@verificarPagoEfectivo');
 	
-
 	//Borra pedido
 	Route::get('borrar-pedido/{idPedido}','PedidoController@borrarPedido');
 
@@ -60,8 +59,18 @@ Route::group(array('prefix' => 'empleado'), function()
 //Rutas para clientes
 Route::group(array('prefix' => 'cliente'), function()
 {
-	//Retorna lista de clientes
-	Route::get('lista','ClienteController@listaClientes');
+//Retorna lista de clientes
+Route::get('lista','ClienteController@listaClientes');
+//retorna los datos de los clientes
+Route::get('lista-clientes','ClienteController@listarClientes');
+//guardar cliente
+Route::post('guardar-cliente','ClienteController@guardarCliente');
+//eliminar cliente
+Route::get('eliminar-cliente/{idCliente}','ClienteController@eliminarCliente');
+//actualizar cliente
+Route::post('actualizar-cliente','ClienteController@actualizarCliente');
+//obtenerCliente
+Route::get('obtener-cliente/{idCliente}','ClienteController@obtenerCliente');
 });
 
 //Rutas para medicinas
