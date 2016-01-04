@@ -6,8 +6,7 @@ class MedicinaController extends BaseController
 	const SUCCESS = 0;
 	const FAIL = -1;
 
-/*
-	public function listaMedicinas()
+/*	public function listaMedicinas()
 	{
 		try {
 			return Medicina::all();//where("cantidad",">",0)->lists('nombre', 'id');
