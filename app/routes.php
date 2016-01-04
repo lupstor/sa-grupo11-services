@@ -56,8 +56,13 @@ Route::group(array('prefix' => 'empleado'), function()
 //Rutas para clientes
 Route::group(array('prefix' => 'cliente'), function()
 {
+
 	//Retorna lista de clientes
 	Route::get('lista','ClienteController@listaClientes');
+	//retorna los datos de los clientes
+	Route::get('lista-clientes','ClienteController@listarClientes');
+	
+
 });
 
 //Rutas para medicinas

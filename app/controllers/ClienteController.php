@@ -6,10 +6,11 @@ class ClienteController extends BaseController {
 	const FAIL = -1;
 
 
-	public function listaClientes()
+	public function listarClientes()
 	{
 		try{
-			return Cliente::lists('nombre', 'id');
+			
+			return Cliente::all();
 
 		} catch (\Exception $ex){
 			Log::error($ex);
@@ -17,6 +18,15 @@ class ClienteController extends BaseController {
 		return null;
 	}
 
-
+	public function listaClientes()
+	{
+		try{
+			return Cliente::lists('nombre', 'id');
+			
+		} catch (\Exception $ex){
+			Log::error($ex);
+		}
+		return null;
+	}
 
 }
