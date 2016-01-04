@@ -55,4 +55,30 @@ class ClienteController extends BaseController {
 
 	}
 
+
+	public function eliminarCliente($idCliente)
+	{
+
+		Log::debug(__METHOD__ ." - idCliente recibido: ". print_r($idCliente,true));
+		$responseCode= self::SUCCESS;
+		$response = array();
+		
+		try{
+
+			$cliente = Cliente::find($idCliente);
+			$cliente -> delete();
+
+		}catch (\Exception $ex) {
+			Log::error($ex);
+			$responseCode = self::FAIL;
+		}
+
+		$response["responseCode"] = $responseCode;
+		return $response;
+
+
+
+
+	}
+
 }
