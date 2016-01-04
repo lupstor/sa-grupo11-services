@@ -79,4 +79,7 @@ Route::group(array('prefix' => 'medicina'), function()
 {
 	//Retorna lista de  medicinas
 	Route::get('lista-medicinas','MedicinaController@listaMedicinas');
+
+	//Combo  medicinas
+	Route::get('combo-medicinas','MedicinaController@comboMedicinas');
 });
