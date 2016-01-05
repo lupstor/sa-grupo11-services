@@ -111,7 +111,7 @@ class PedidoController extends BaseController {
 			$cantidadRestante = $medicina->cantidad - $data["cantidad"];
 
 			if($data["cantidad"] == 0) throw new \Exception("Se tiene que agregar por lo menos un medicamento");
-			if($cantidadRestante <= 0) throw new \Exception("No hay disponbilidad suficiente de medicina");
+			if($cantidadRestante < 0) throw new \Exception("No hay disponbilidad suficiente de medicina");
 
 			//Guardar detalle
 			$subtotal = $medicina->precio * (int) $data["cantidad"];
@@ -254,7 +254,7 @@ class PedidoController extends BaseController {
 		try{
 			$pedido = Pedido::find($idPedido);
 			if (empty($pedido)) throw new Exception("Error al intentar recuperar compra # [$idPedido]");
-			$pedido->status = 'cancelada';
+			$pedido->status = 'cancelado';
 			$pedido->save();
 		}catch (\Exception $ex){
 			Log::error($ex);
