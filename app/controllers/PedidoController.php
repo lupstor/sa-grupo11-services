@@ -248,4 +248,18 @@ class PedidoController extends BaseController {
 		}	
 		return array("responseCode" => $response);
 	}
+
+	public  function  cancelarCompra($idPedido){
+		$response = self::SUCCESS;
+		try{
+			$pedido = Pedido::find($idPedido);
+			if (empty($pedido)) throw new Exception("Error al intentar recuperar compra # [$idPedido]");
+			$pedido->status = 'cancelada';
+			$pedido->save();
+		}catch (\Exception $ex){
+			Log::error($ex);
+			$response = self::FAIL;
+		}
+		return array("responseCode" => $response);
+	}
 }
