@@ -163,7 +163,7 @@ class PedidoController extends BaseController {
 					'PuntoVenta.nombre as farmacia',
 					'Pedido.tipo_pago',
 					'Pedido.total',
-					'Pedido.created_at')
+					'Pedido.created_at','Pedido.status')
 				->where('PuntoVenta.tipo_punto_venta', '=', "farmacia")
 				->get();
 		} catch (\Exception $ex){

@@ -84,4 +84,11 @@ Route::group(array('prefix' => 'medicina'), function()
 
 	//Combo  medicinas
 	Route::get('combo-medicinas','MedicinaController@comboMedicinas');
+
+	//Combo  proveedores
+	Route::get('combo-proveedores','MedicinaController@comboProveedores');
+
+	//guardar cliente
+	Route::post('guardar-medicina','MedicinaController@guardarMedicina');
+
 });
