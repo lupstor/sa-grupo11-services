@@ -45,6 +45,9 @@ Route::group(array('prefix' => 'pedido'), function()
 	//Detalle de pedido
 	Route::get('detalle-pedido/{idPedido}','PedidoController@detallePedido');
 
+	//Cancelar compra
+	Route::get('cancelar-compra/{idPedido}','PedidoController@cancelarCompra');
+
 
 });
 
