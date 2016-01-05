@@ -215,7 +215,7 @@ class PedidoController extends BaseController {
 			$pedido = Pedido::find($data["idPedido"]);
 			$pedido->tipo_pago = $data["tipo_pago"];
 			$pedido->status = $data["status"];
-			$pedido->recargo = $data["ocultoRecargo"];
+			$pedido->recargo = $pedido->total * $data["porcentajeTarjeta"];
 			$pedido->save();
 		}  catch (\Exception $ex) {
 			Log::error($ex);
